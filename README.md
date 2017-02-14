@@ -6,3 +6,5 @@
     $npm run dev
 ##编译方法
     $npm run build
+##测试
+    npm test
