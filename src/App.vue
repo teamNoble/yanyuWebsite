@@ -27,4 +27,5 @@
 </style>
 <style lang="less">
   @import "../node_modules/bootstrap/less/bootstrap.less";
+  @import "../node_modules/font-awesome/less/font-awesome.less";
 </style>

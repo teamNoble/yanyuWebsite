@@ -18,6 +18,7 @@
     position: fixed;
     margin-left: 0px;
     margin-right: 0px;
+    z-index: 100;
   }
   .header-text {
     margin-top: 10px;
@@ -26,6 +27,7 @@
   .header-text:hover {
     cursor: pointer;
     color: #848484;
+    transition: 0.2s;
   }
 </style>
 <script>
