@@ -15,20 +15,25 @@
       </div>
     </div>
     <div class="list col-md-9">
-      <div class="border" v-for="n in 10">
+      <div class="border" v-for="entry in listDatas">
         <a class="left">
           <div class="limg"><img class="imageSrc" src="../../assets/logo.png"></div>
         </a>
         <div class="right">
-          <div class="title">假装是标题<span class="pubTime">2017-2-14 11:11</span></div>
-          <div class="desc">假装这里有非常高大上的内容简介假装这里有非常高大上的内容简介假装这里有非常高大上的内容简介假装这里有非常高大上的内容简介假装这里有非常高大上的内容简介假装这里有非常高大上的内容简介
-          </div>
+          <div class="title">{{ entry.title }}<span class="pubTime">{{ entry.time }}</span></div>
+          <div class="desc">{{ entry.context }}</div>
           <div class="cover"><img src="../../assets/logo.png"></div>
         </div>
         <div class="action">
           <button class="btn btn-default" type="button"><i class="fa fa-info-circle" aria-hidden="true"></i>详情</button>
-          <button class="btn btn-default" type="button"><i class="fa fa-play-circle" aria-hidden="true"></i>播放</button>
+          <button class="btn btn-default" type="button" @click="play(entry)"><i class="fa fa-play-circle" aria-hidden="true"></i>播放
+          </button>
           <button class="btn btn-default" type="button"><i class="fa fa-download" aria-hidden="true"></i>下载</button>
+          <div class="player">
+            <audio controls="controls">
+              <source :src="entry.audio" type="audio/mpeg"/>
+            </audio>
+          </div>
         </div>
       </div>
     </div>
@@ -124,21 +129,25 @@
     z-index: 100;
     text-align: center;
   }
+
   .share {
     padding-top: 30px;
     width: 80%;
     text-align: center;
     margin: 0 auto;
   }
+
   .shareIcon {
     color: #aaaaaa;
     cursor: pointer;
   }
+
   .shareIcon:hover {
     transition: 0.5s;
     color: white;
     cursor: pointer;
   }
+
   .bref {
     padding-top: 20%;
     width: 90%;
@@ -146,6 +155,7 @@
     margin: 0 auto;
     color: white;
   }
+
   .copyleft {
     bottom: 0px;
     color: white;
@@ -154,12 +164,41 @@
     text-align: center;
     margin: 0 auto;
   }
+
+  .player {
+    clear: both;
+  }
 </style>
 <script>
+  var self = null
+  import axios from 'axios'
   export default{
     data () {
-      return {}
+      return {
+        listDatas: []
+      }
     },
-    components: {}
+    components: {},
+    methods: {
+      play: function (item) {
+        item.showPlay = true
+      },
+      detail: function (item) {
+        self.$router.replace('/detail/' + item.ids)
+      },
+      download: function (item) {
+        window.open(item.audio)
+      }
+    },
+    created: function () {
+      self = this
+    },
+    mounted: function () {
+      axios.get('/static/list.json').then(function (data) {
+        self.listDatas = data.data
+      }).catch(function (err) {
+        console.error(err)
+      })
+    }
   }
 </script>
